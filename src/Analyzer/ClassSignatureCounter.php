@@ -11,11 +11,9 @@
 
 namespace Greeflas\StaticAnalyzer\Analyzer;
 
-use Greeflas\StaticAnalyzer\Exceptions\InvalidClassNameException;
+use Greeflas\StaticAnalyzer\Exception\InvalidClassNameExeption;
 
 /**
- * Class ClassSignatureCounter
- *
  * The methods and properties of the required class are counted, the type is determined by the specified class name.
  *
  * @author Anton Degoda <dehoda@ukr.net>
@@ -23,44 +21,33 @@ use Greeflas\StaticAnalyzer\Exceptions\InvalidClassNameException;
 final class ClassSignatureCounter
 {
     private $classFullName;
-    public $privateMethods;
-    public $publicMethods;
-    public $protectedMethods;
-    public $privateProperties;
-    public $protectedProperties;
-    public $publicProperties;
-    public $type;
 
     public function __construct(string $classFullName)
     {
         $this->classFullName = $classFullName;
-        $this->privateMethods = 0;
-        $this->publicMethods = 0;
-        $this->protectedMethods = 0;
-        $this->privateProperties = 0;
-        $this->protectedProperties = 0;
-        $this->publicProperties = 0;
     }
 
-    public function analyze(): self
+    public function analyze(): object
     {
-        $reflector = new \ReflectionClass($this->classFullName);
-
-        if (null == $reflector) {
-            throw new InvalidClassNameException('Invalid class name');
+        try {
+            $reflector = new \ReflectionClass($this->classFullName);
+        } catch (\ReflectionException $e) {
+            throw new InvalidClassNameExeption($e);
         }
 
-        $this->type = \implode(' ', \Reflection::getModifierNames($reflector->getModifiers()));
+        $signature = new SignatureCollection();
+
+        $signature->type = \implode(' ', \Reflection::getModifierNames($reflector->getModifiers()));
 
         $methods = $reflector->getMethods();
 
         foreach ($methods as $method) {
             if ($method->isPrivate()) {
-                $this->privateMethods++;
+                $signature->privateMethods++;
             } elseif ($method->isProtected()) {
-                $this->protectedMethods++;
+                $signature->protectedMethods++;
             } elseif ($method->isPublic()) {
-                $this->publicMethods++;
+                $signature->publicMethods++;
             }
         }
 
@@ -69,14 +56,14 @@ final class ClassSignatureCounter
 
         foreach ($properties as $property) {
             if ($property->isPrivate()) {
-                $this->privateProperties++;
+                $signature->privateProperties++;
             } elseif ($property->isProtected()) {
-                $this->protectedProperties++;
+                $signature->protectedProperties++;
             } elseif ($property->isPublic()) {
-                $this->publicProperties++;
+                $signature->publicProperties++;
             }
         }
 
-        return $this;
+        return $signature;
     }
 }

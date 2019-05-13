@@ -18,14 +18,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class ClassSignatureStat
- *
  * Command collects information about the signature of a given class - the number of methods and properties,
  * as well as the type of the specified class.
  * The required class is specified using the full name.
  *
  * Example of usage
- * ./bin/console stat:class-signature Greeflas\\StaticAnalyzer\\Analyzer\\ClassSignatureCounter
+ * ./bin/console stat:class-signature <full-class-name>
  *
  * @author Anton Degoda <dehoda@ukr.net>
  */

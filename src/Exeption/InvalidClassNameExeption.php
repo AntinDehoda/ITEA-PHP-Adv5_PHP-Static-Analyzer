@@ -9,12 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Greeflas\StaticAnalyzer\Exceptions;
+namespace Greeflas\StaticAnalyzer\Exception;
 
 /**
- * Class InvalidClassNameException
- *
- * @author Anton Degoda <dehoda@ukr.net>
+  * @author Anton Degoda <dehoda@ukr.net>
  */
 class InvalidClassNameExeption extends \DomainException
 {
