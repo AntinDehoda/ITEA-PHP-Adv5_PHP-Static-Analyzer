@@ -1,24 +1,36 @@
 <?php
 
+/*
+ * This file is part of the "PHP Static Analyzer" project.
+ *
+ * (c) Vladimir Kuprienko <vldmr.kuprienko@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Greeflas\StaticAnalyzer\Command;
 
-use Greeflas\StaticAnalyzer\Analyzer\ClassSignature;
+use Greeflas\StaticAnalyzer\Analyzer\ClassSignatureCounter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+
 /**
- * Command for getting information about classes/interfaces/traits
- * was created by some developer.
+ * Class ClassSignatureStat
+ *
+ * The team collects information about the signature of a given class - the number of methods and properties,
+ * as well as the type of the specified class.
+ * The required class is specified using the full name.
  *
  * Example of usage
- * ./bin/console stat:class-author vldmr.kuprienko@gmail.com $PWD/src
+ * ./bin/console stat:class-signature Greeflas\\StaticAnalyzer\\Analyzer\\ClassSignatureCounter
  *
- * @author Vladimir Kuprienko <vldmr.kuprienko@gmail.com>
+ * @author Anton Degoda <dehoda@ukr.net>
  */
-
-final class ClassSignatureCounter extends Command{
+final class ClassSignatureStat extends Command
+{
     /**
      * {@inheritdoc}
      */
@@ -42,29 +54,28 @@ final class ClassSignatureCounter extends Command{
     {
         $fullClassName = $input->getArgument('full-class-name');
 
-        $classAnalyzer = new ClassSignature($fullClassName);
+        $classAnalyzer = new ClassSignatureCounter($fullClassName);
         $classInfo = $classAnalyzer->analyze();
 
 
         $output->writeln(\sprintf(
-            "<info>Class: %s is %s</info>" .
+            '<info>Class: %s is %s</info>' .
             "\n" .
-            "<info>Properties:</info>" .
+            '<info>Properties:</info>' .
             "\n" .
-            "<info>    public: %d</info>" .
+            '<info>    public: %d</info>' .
             "\n" .
-            "<info>    protected: %d</info>" .
+            '<info>    protected: %d</info>' .
             "\n" .
-            "<info>    private: %d</info>" .
+            '<info>    private: %d</info>' .
             "\n" .
-            "<info>Methods:</info>" .
+            '<info>Methods:</info>' .
             "\n" .
-            "<info>    public: %d</info>" .
+            '<info>    public: %d</info>' .
             "\n" .
-            "<info>    protected: %d</info>" .
+            '<info>    protected: %d</info>' .
             "\n" .
-            "<info>    private: %d</info>"
-            ,
+            '<info>    private: %d</info>',
             $fullClassName,
             $classInfo->type,
             $classInfo->publicProperties,
@@ -74,7 +85,5 @@ final class ClassSignatureCounter extends Command{
             $classInfo->protectedMethods,
             $classInfo->privateMethods
         ));
-
     }
-
 }
