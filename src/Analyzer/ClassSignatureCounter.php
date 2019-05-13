@@ -11,7 +11,7 @@
 
 namespace Greeflas\StaticAnalyzer\Analyzer;
 
-use Greeflas\StaticAnalyzer\Exception\InvalidClassNameExeption;
+use Greeflas\StaticAnalyzer\Exception\InvalidClassNameException;
 
 /**
  * The methods and properties of the required class are counted, the type is determined by the specified class name.
@@ -32,7 +32,7 @@ final class ClassSignatureCounter
         try {
             $reflector = new \ReflectionClass($this->classFullName);
         } catch (\ReflectionException $e) {
-            throw new InvalidClassNameExeption($e);
+            throw new InvalidClassNameException($e);
         }
 
         $signature = new SignatureCollection();
