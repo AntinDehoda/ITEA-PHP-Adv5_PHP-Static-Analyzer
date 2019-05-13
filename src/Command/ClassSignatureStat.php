@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Class ClassSignatureStat
  *
- * The team collects information about the signature of a given class - the number of methods and properties,
+ * Command collects information about the signature of a given class - the number of methods and properties,
  * as well as the type of the specified class.
  * The required class is specified using the full name.
  *
