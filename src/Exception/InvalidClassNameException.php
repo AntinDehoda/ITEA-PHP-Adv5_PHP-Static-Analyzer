@@ -14,6 +14,6 @@ namespace Greeflas\StaticAnalyzer\Exception;
 /**
   * @author Anton Degoda <dehoda@ukr.net>
  */
-class InvalidClassNameException extends \DomainException
+class InvalidClassNameException extends \RuntimeException
 {
 }

@@ -18,13 +18,13 @@ namespace Greeflas\StaticAnalyzer\Analyzer;
  */
 final class SignatureCollection
 {
-    public $privateMethods;
-    public $publicMethods;
-    public $protectedMethods;
-    public $privateProperties;
-    public $protectedProperties;
-    public $publicProperties;
-    public $type;
+    private $privateMethods;
+    private $publicMethods;
+    private $protectedMethods;
+    private $privateProperties;
+    private $protectedProperties;
+    private $publicProperties;
+    private $type;
 
     public function __construct()
     {
@@ -34,5 +34,75 @@ final class SignatureCollection
         $this->privateProperties = 0;
         $this->protectedProperties = 0;
         $this->publicProperties = 0;
+    }
+
+    public function getPrivateMethods(): int
+    {
+        return $this->privateMethods;
+    }
+
+    public function increasePrivateMethods(): void
+    {
+        $this->privateMethods++;
+    }
+
+    public function getPublicMethods(): int
+    {
+        return $this->publicMethods;
+    }
+
+    public function increasePublicMethods(): void
+    {
+        $this->publicMethods++;
+    }
+
+    public function getProtectedMethods(): int
+    {
+        return $this->protectedMethods;
+    }
+
+    public function increaseProtectedMethods(): void
+    {
+        $this->protectedMethods;
+    }
+
+    public function getPrivateProperties(): int
+    {
+        return $this->privateProperties;
+    }
+
+    public function increasePrivateProperties(): void
+    {
+        $this->privateProperties++;
+    }
+
+    public function getProtectedProperties(): int
+    {
+        return $this->protectedProperties;
+    }
+
+    public function increaseProtectedProperties(int $protectedProperties): void
+    {
+        $this->protectedProperties ++;
+    }
+
+    public function getPublicProperties(): int
+    {
+        return $this->publicProperties;
+    }
+
+    public function increasePublicProperties(): void
+    {
+        $this->publicProperties ++;
+    }
+
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    public function setType($type): void
+    {
+        $this->type = $type;
     }
 }

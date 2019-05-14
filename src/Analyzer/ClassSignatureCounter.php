@@ -32,22 +32,25 @@ final class ClassSignatureCounter
         try {
             $reflector = new \ReflectionClass($this->classFullName);
         } catch (\ReflectionException $e) {
-            throw new InvalidClassNameException($e);
+            throw new InvalidClassNameException(\sprintf('Invalid class name %s', $this->classFullName));
         }
 
         $signature = new SignatureCollection();
 
-        $signature->type = \implode(' ', \Reflection::getModifierNames($reflector->getModifiers()));
+        $modifierNames = \Reflection::getModifierNames($reflector->getModifiers());
+        $modifierName = (0 == \count($modifierNames)) ? 'normal' : \implode(' ', $modifierNames);
+
+        $signature->setType($modifierName);
 
         $methods = $reflector->getMethods();
 
         foreach ($methods as $method) {
             if ($method->isPrivate()) {
-                $signature->privateMethods++;
+                $signature->increasePrivateMethods();
             } elseif ($method->isProtected()) {
-                $signature->protectedMethods++;
+                $signature->increaseProtectedMethods();
             } elseif ($method->isPublic()) {
-                $signature->publicMethods++;
+                $signature->increasePublicMethods();
             }
         }
 
@@ -56,11 +59,11 @@ final class ClassSignatureCounter
 
         foreach ($properties as $property) {
             if ($property->isPrivate()) {
-                $signature->privateProperties++;
+                $signature->increasePrivateProperties();
             } elseif ($property->isProtected()) {
-                $signature->protectedProperties++;
+                $signature->increaseProtectedProperties();
             } elseif ($property->isPublic()) {
-                $signature->publicProperties++;
+                $signature->increasePublicProperties();
             }
         }
 

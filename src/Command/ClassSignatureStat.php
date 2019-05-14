@@ -12,6 +12,7 @@
 namespace Greeflas\StaticAnalyzer\Command;
 
 use Greeflas\StaticAnalyzer\Analyzer\ClassSignatureCounter;
+use Greeflas\StaticAnalyzer\Analyzer\SignatureCollection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,7 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * The required class is specified using the full name.
  *
  * Example of usage
- * ./bin/console stat:class-signature <full-class-name>
+ * ./bin/console stat:class-signature Greeflas\\StaticAnalyzer\\Analyzer\\ClassSignatureCounter
  *
  * @author Anton Degoda <dehoda@ukr.net>
  */
@@ -53,6 +54,7 @@ final class ClassSignatureStat extends Command
         $fullClassName = $input->getArgument('full-class-name');
 
         $classAnalyzer = new ClassSignatureCounter($fullClassName);
+        /** @var SignatureCollection $classInfo */
         $classInfo = $classAnalyzer->analyze();
 
 
@@ -75,13 +77,13 @@ final class ClassSignatureStat extends Command
             "\n" .
             '<info>    private: %d</info>',
             $fullClassName,
-            $classInfo->type,
-            $classInfo->publicProperties,
-            $classInfo->protectedProperties,
-            $classInfo->privateProperties,
-            $classInfo->publicMethods,
-            $classInfo->protectedMethods,
-            $classInfo->privateMethods
+            $classInfo->getType(),
+            $classInfo->getPublicProperties(),
+            $classInfo->getProtectedProperties(),
+            $classInfo->getPrivateProperties(),
+            $classInfo->getPublicMethods(),
+            $classInfo->getProtectedMethods(),
+            $classInfo->getPrivateMethods()
         ));
     }
 }

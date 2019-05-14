@@ -14,7 +14,7 @@ Usage
 `$ ./bin/console stat:class-author <email> <project-src>` - counts classes/interfaces/trait
 created by some developer in project.
 
-`./bin/console stat:class-signature Greeflas\\StaticAnalyzer\\Analyzer\\ClassSignatureCounter` - Shows type, 
+`./bin/console stat:class-signature <full-class-name>` - Shows type, 
 counts methods and properties of specified class.
 
 Code style fixer
