@@ -27,7 +27,7 @@ final class ClassSignatureCounter
         $this->classFullName = $classFullName;
     }
 
-    public function analyze(): object
+    public function analyze(): SignatureCollection
     {
         try {
             $reflector = new \ReflectionClass($this->classFullName);
@@ -38,35 +38,38 @@ final class ClassSignatureCounter
         $signature = new SignatureCollection();
 
         $modifierNames = \Reflection::getModifierNames($reflector->getModifiers());
-        $modifierName = (0 == \count($modifierNames)) ? 'normal' : \implode(' ', $modifierNames);
+        $modifierName = (0 == \count($modifierNames)) ? $signature::TYPE_NORMAL : \implode(' ', $modifierNames);
 
         $signature->setType($modifierName);
 
         $methods = $reflector->getMethods();
-
-        foreach ($methods as $method) {
-            if ($method->isPrivate()) {
-                $signature->increasePrivateMethods();
-            } elseif ($method->isProtected()) {
-                $signature->increaseProtectedMethods();
-            } elseif ($method->isPublic()) {
-                $signature->increasePublicMethods();
-            }
-        }
+        $signature = $this->countSignature($methods, $signature);
 
         $properties = $reflector->getProperties();
+        $signature = $this->countSignature($properties, $signature);
 
 
-        foreach ($properties as $property) {
-            if ($property->isPrivate()) {
-                $signature->increasePrivateProperties();
-            } elseif ($property->isProtected()) {
-                $signature->increaseProtectedProperties();
-            } elseif ($property->isPublic()) {
-                $signature->increasePublicProperties();
+        return $signature;
+    }
+    /**
+     * Counting methods or properties
+     *
+     * @param \ReflectionMethod []| \ReflectionProperty[] $reflectorElementsArray
+     *
+     * @return SignatureCollection
+     */
+    private function countSignature(array $reflectorElementsArray, SignatureCollection $signatureObject)
+    {
+        foreach ($reflectorElementsArray as $elem) {
+            if ($elem->isPrivate()) {
+                $signatureObject->increasePrivateProperties();
+            } elseif ($elem->isProtected()) {
+                $signatureObject->increaseProtectedProperties();
+            } elseif ($elem->isPublic()) {
+                $signatureObject->increasePublicProperties();
             }
         }
 
-        return $signature;
+        return $signatureObject;
     }
 }

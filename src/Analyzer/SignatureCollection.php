@@ -18,23 +18,15 @@ namespace Greeflas\StaticAnalyzer\Analyzer;
  */
 final class SignatureCollection
 {
-    private $privateMethods;
-    private $publicMethods;
-    private $protectedMethods;
-    private $privateProperties;
-    private $protectedProperties;
-    private $publicProperties;
+    public const TYPE_NORMAL ='normal';
+    private $privateMethods = 0;
+    private $publicMethods = 0;
+    private $protectedMethods = 0;
+    private $privateProperties = 0;
+    private $protectedProperties = 0;
+    private $publicProperties = 0;
     private $type;
 
-    public function __construct()
-    {
-        $this->privateMethods = 0;
-        $this->publicMethods = 0;
-        $this->protectedMethods = 0;
-        $this->privateProperties = 0;
-        $this->protectedProperties = 0;
-        $this->publicProperties = 0;
-    }
 
     public function getPrivateMethods(): int
     {
@@ -81,7 +73,7 @@ final class SignatureCollection
         return $this->protectedProperties;
     }
 
-    public function increaseProtectedProperties(int $protectedProperties): void
+    public function increaseProtectedProperties(): void
     {
         $this->protectedProperties ++;
     }
